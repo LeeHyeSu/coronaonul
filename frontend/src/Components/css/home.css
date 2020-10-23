@@ -1,0 +1,84 @@
+.home__header {
+  position: fixed;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 5%;
+  z-index: 10;
+  background-color: #333333;
+  color: white;
+  opacity: 0.9;
+}
+
+.btnModal {
+  padding: 10px;
+  background-color: #333333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 17px;
+}
+
+.header__title {
+  font-size: 18px;
+}
+
+.header__date {
+  padding: 10px;
+}
+
+.Overlay {
+  background-color: rgba(0, 0, 0, 0.55);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: fixed;
+  display: none;
+  z-index: 5;
+}
+
+.Overlay.Show {
+  display: block;
+}
+
+.Modal {
+  position: fixed;
+  top: 0;
+  left: -150vh;
+  background-color: #333333;
+  color: #fff;
+  width: 250px;
+  height: 100%;
+  box-shadow: 0 0 4px 0px rgba(0, 0, 0, 0.15);
+  padding: 0 12px 12px;
+  transition: all 0.3s ease-out;
+  z-index: 10;
+}
+
+.Modal.Show {
+  left: 0;
+}
+
+.btnClose {
+  cursor: pointer;
+  position: absolute;
+  top: 16px;
+  left: 10px;
+  background-color: transparent;
+  border: 0;
+  font-size: 18px;
+  color: #fff;
+}
+
+.modalTitle {
+  position: absolute;
+  top: 70px;
+}
+
+.modalText {
+  position: absolute;
+  top: 150px;
+}
