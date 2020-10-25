@@ -1,4 +1,6 @@
 @import "./home.css";
+@import "./map.css";
+@import "./nav.css";
 
 html {
   box-sizing: border-box;

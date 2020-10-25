@@ -1,4 +1,4 @@
-.home__header {
+/* .home__header {
   position: fixed;
   top: 0;
   display: flex;
@@ -81,4 +81,89 @@
 .modalText {
   position: absolute;
   top: 150px;
+} */
+
+.home {
+  display: flex;
+}
+
+.main__header {
+  position: absolute;
+  right: 8%;
+  top: 10px;
+}
+
+.main__toggle {
+  color: #040317;
+}
+
+.main__toggle:nth-child(1),
+.main__toggle:nth-child(3) {
+  cursor: pointer;
+}
+
+.main {
+  width: 86%;
+  height: 200vh;
+  position: absolute;
+  left: 14%;
+  display: flex;
+  flex-direction: column;
+  background-color: #f1f3fb;
+}
+
+.city-cards {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  top: 30px;
+}
+
+.city-card {
+  background-color: white;
+  width: 18%;
+  height: 140px;
+  margin: 20px;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.card__title {
+  position: absolute;
+  font-weight: 600;
+  padding: 10px;
+  color: #040317;
+}
+
+.map-section {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  top: 80px;
+}
+
+.map {
+  background-color: white;
+  width: 60%;
+  height: 600px;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.nation-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-items: center;
+  width: 100%;
+  position: relative;
+  top: 160px;
+}
+
+.nation-card {
+  background-color: white;
+  width: 73%;
+  height: 140px;
+  margin: 20px;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
