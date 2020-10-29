@@ -7,7 +7,7 @@
   flex-direction: column;
   position: fixed;
   left: 0;
-  z-index: 1;
+  z-index: 5;
 }
 
 .nav__title {
@@ -46,18 +46,61 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   margin: 28px 0;
   font-size: 17px;
   cursor: pointer;
+  z-index: 10;
+}
+
+/* .nav__list:hover {
+  background-color: #f1f3fb;
+  opacity: 0.4;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  z-index: 1;
+  color: #040317;
+} */
+
+.nav__list:active,
+.nav__list:visited {
+  background-color: #f1f3fb;
 }
 
 .nav__icon {
   font-size: 28px;
   color: #f1f3fb;
   margin-bottom: 6px;
+  display: flex;
+  justify-content: center;
+}
+
+.nav__icon:nth-child(n + 2) {
+  position: relative;
+  left: 50%;
 }
 
 .text-link {
   color: inherit;
   text-decoration: none;
 }
+
+/* .Overlay {
+  background-color: #f1f3fb;
+  opacity: 0.5;
+  top: 265px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  position: absolute;
+  display: none;
+  z-index: 3;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  color: #1a1053;
+}
+
+.Overlay.Show {
+  display: block;
+} */

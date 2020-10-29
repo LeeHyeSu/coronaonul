@@ -1,17 +1,54 @@
 import React, {useState, useEffect} from 'react';
 import { HashRouter as Router, Link } from "react-router-dom";
-import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVirus, faVial, faFileAlt, faHeadSideCough, faHeart, faDatabase } from "@fortawesome/free-solid-svg-icons";
 import "../Components/css/styles.css";
 import Map from "../Components/Map"
 
-function Home() {
+const content = [
+  {
+    tab: "오늘",
+    content: ["오늘 확진자", "오늘 검사중", "오늘 완치자", "오늘 사망자"]
+  },
+  {
+    tab: " | "
+  },
+  {
+    tab: "누적",
+    content: ["누적 확진자", "누적 검사중", "누적 완치자", "누적 사망자"]
+  }
+]
+
+const useTabs = (initialTab, allTabs) => {
+  const [currentIndex, setCurrentIndex] = useState(initialTab);
+  return {
+    currentItem: allTabs[currentIndex],
+    changeItem: setCurrentIndex
+  };
+};
+
+const Home = (props) => {
   const [dateTime, setDateTime] = useState(new Date());
-  // const [lat, setLat] = useState(null);
-  // const [lon, setLon] = useState(null);
-  // const [city, setCity] = useState("");
-  // const API_KEY = "f3c59f07aa3c3d51508dd682e2c66808";
+  const { currentItem, changeItem } = useTabs(0, content);
+  // const [overlay, setOverlay] = useState(false);
+  const { lat, lon, name, temp } = props;
+  // const initialLocationState = {
+  //   lat: null,
+  //   lng: null
+  // }
+  // const [{lat, lng}, setLocation] = useState(initialLocationState);
+  // let geolocationMounted = true;
+
+  // const handleGeolocation = e => {
+  //   if(geolocationMounted) {
+  //     setLocation({
+  //       lat: e.coords.latitude,
+  //       lng: e.coords.longitude
+  //     })
+  //   }
+  // }
+  
+
 
   useEffect(() => {
     const id = setInterval(() => setDateTime(new Date()), 1000);
@@ -20,23 +57,16 @@ function Home() {
     }
   }, []);
 
-  // useEffect(()=> {
-  //   window.navigator.geolocation.getCurrentPosition(
-  //     position => {
-  //       setLat(position.coords.latitude),
-  //       setLon(position.coords.longitude)
-
-  //       fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${API_KEY}&units=metric`)
-  //       .then(res => {
-  //         return res.json();
-  //       })
-  //       .then(result => {
-  //         const {city} = result;
-  //         setCity(city);
-  //       })
-  //     })
-    
+  // useEffect(() => {
+  //   navigator.geolocation.getCurrentPosition(handleGeolocation);
+  //   const geolocationWatchId = navigator.geolocation.watchPosition(handleGeolocation);
+  
+  //   return() => {
+  //     geolocationMounted = false;
+  //     navigator.geolocation.clearWatch(geolocationWatchId);
+  //   }
   // }, []);
+
 
   return (
     <div className="home">
@@ -49,66 +79,96 @@ function Home() {
         </div>
 
         <div className="nav__date">
-        {`${dateTime.toLocaleDateString()}`}
+          {`${dateTime.toLocaleDateString()}`}
         </div>
 
         <div className="nav__city">
+          {/* {lat}, {lng} */}
+          {/* {lat}, {lon}, {name}, {temp} */}
           city
         </div>
           <ul className="nav__lists">
             <li className="nav__list">
-              <div className="nav__icon"><FontAwesomeIcon icon={faFileAlt} /></div>
-                <Router>
-                  <Link to="/" className="text-link">코로나 현황</Link>
-                </Router>
+              <Router>
+                <Link to="/" className="text-link">
+                  <div className="nav__icon"><FontAwesomeIcon icon={faFileAlt} /></div>
+                  <div className="nav__listTitle">코로나 현황</div>
+                </Link>
+              </Router>
+                
             </li>
             <li className="nav__list">
-              <div className="nav__icon"><FontAwesomeIcon icon={faHeadSideCough} /></div>
-                <Router>
-                  <Link to="/symptoms" className="text-link">증상</Link>
-                </Router>
+              <Router>
+                <Link to="/symptoms" className="text-link">
+                  <div className="nav__icon"><FontAwesomeIcon icon={faHeadSideCough} /></div>
+                  <div className="nav__listTitle">증상</div>
+                </Link>
+              </Router>
             </li>
             <li className="nav__list">
-              <div className="nav__icon"><FontAwesomeIcon icon={faVial} /></div>
-                <Router>
-                  <Link to="/selftest" className="text-link">자가테스트</Link>
-                </Router>
+              <Router>
+                <Link to="/selftest" className="text-link">
+                  <div className="nav__icon"><FontAwesomeIcon icon={faVial} /></div>
+                  <div className="nav__listTitle">자가테스트</div>
+                </Link>
+              </Router>
             </li>
             <li className="nav__list">
-              <div className="nav__icon"><FontAwesomeIcon icon={faHeart} /></div>
-                <Router>
-                  <Link to="/prevention" className="text-link">코로나 예방법</Link>
-                </Router>
+              <Router>
+                <Link to="/prevention" className="text-link">
+                  <div className="nav__icon"><FontAwesomeIcon icon={faHeart} /></div>
+                  <div className="nav__listTitle">코로나 예방법</div>
+                </Link>
+              </Router>
             </li>
             <li className="nav__list">
-              <div className="nav__icon"><FontAwesomeIcon icon={faDatabase} /></div>
-                <Router>
-                  <Link to="/source" className="text-link">출처</Link>
-                </Router>
+              <Router>
+                <Link to="/source" className="text-link">
+                  <div className="nav__icon"><FontAwesomeIcon icon={faDatabase} /></div>
+                  <div className="nav__listTitle">출처</div>
+                </Link>
+              </Router>
             </li>
           </ul>
       </div>
 
       <main className="main">
         <div className="main__header">
-          <span className="main__toggle">오늘</span>
-          <span className="main__toggle"> | </span>
-          <span className="main__toggle">누적</span>
+        {content.map((section, index) => (
+        <span className="figure-toggle" onClick={() => changeItem(index)}>{section.tab}</span>
+      ))}
+      
+            
+        
         </div>
         <div className="city-cards">
           <div className="city-card">
             <span className="card__title">확진자</span>
+            <div className="city-figure confirmed">
+              {currentItem.content[0]}
+            </div>
           </div>
-          <div className="city-card">
-            <span className="card__title">사망자</span>
-          </div>
+          
           <div className="city-card">
             <span className="card__title">검사중</span>
+            <div className="city-figure testing">
+              {currentItem.content[1]}
+            </div>
           </div>
           <div className="city-card">
             <span className="card__title">완치자</span>
+            <div className="city-figure recovered">
+              {currentItem.content[2]}
+            </div>
+          </div>
+          <div className="city-card">
+            <span className="card__title">사망자</span>
+            <div className="city-figure death">
+              {currentItem.content[3]}
+            </div>
           </div>
         </div>
+        
         <div className="map-section">
           <div className="map">지도</div>
         </div>
