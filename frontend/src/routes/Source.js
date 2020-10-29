@@ -57,34 +57,45 @@ function Source() {
         </div>
           <ul className="nav__lists">
             <li className="nav__list">
-              <div className="nav__icon"><FontAwesomeIcon icon={faFileAlt} /></div>
-                <Router>
-                  <Link to="/" className="text-link">코로나 현황</Link>
-                </Router>
+              <Router>
+                <Link to="/" className="text-link">
+                  <div className="nav__icon"><FontAwesomeIcon icon={faFileAlt} /></div>
+                  <div className="nav__listTitle">코로나 현황</div>
+                </Link>
+              </Router>
+                
             </li>
             <li className="nav__list">
-              <div className="nav__icon"><FontAwesomeIcon icon={faHeadSideCough} /></div>
-                <Router>
-                  <Link to="/symptoms" className="text-link">증상</Link>
-                </Router>
+              <Router>
+                <Link to="/symptoms" className="text-link">
+                  <div className="nav__icon"><FontAwesomeIcon icon={faHeadSideCough} /></div>
+                  <div className="nav__listTitle">증상</div>
+                </Link>
+              </Router>
             </li>
             <li className="nav__list">
-              <div className="nav__icon"><FontAwesomeIcon icon={faVial} /></div>
-                <Router>
-                  <Link to="/selftest" className="text-link">자가테스트</Link>
-                </Router>
+              <Router>
+                <Link to="/selftest" className="text-link">
+                  <div className="nav__icon"><FontAwesomeIcon icon={faVial} /></div>
+                  <div className="nav__listTitle">자가테스트</div>
+                </Link>
+              </Router>
             </li>
             <li className="nav__list">
-              <div className="nav__icon"><FontAwesomeIcon icon={faHeart} /></div>
-                <Router>
-                  <Link to="/prevention" className="text-link">코로나 예방법</Link>
-                </Router>
+              <Router>
+                <Link to="/prevention" className="text-link">
+                  <div className="nav__icon"><FontAwesomeIcon icon={faHeart} /></div>
+                  <div className="nav__listTitle">코로나 예방법</div>
+                </Link>
+              </Router>
             </li>
             <li className="nav__list">
-              <div className="nav__icon"><FontAwesomeIcon icon={faDatabase} /></div>
-                <Router>
-                  <Link to="/source" className="text-link">출처</Link>
-                </Router>
+              <Router>
+                <Link to="/source" className="text-link">
+                  <div className="nav__icon"><FontAwesomeIcon icon={faDatabase} /></div>
+                  <div className="nav__listTitle">출처</div>
+                </Link>
+              </Router>
             </li>
           </ul>
       </div>
