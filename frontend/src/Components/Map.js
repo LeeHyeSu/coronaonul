@@ -8,8 +8,8 @@ function NaverMapAPI() {
         className = "naverMap"
         mapDivId={'maps-getting-started-uncontrolled'} // default: react-naver-map
         style={{
-          width: '45%', // 네이버지도 가로 길이
-          height: '65vh' // 네이버지도 세로 길이
+          width: '100%', // 네이버지도 가로 길이
+          height: '63vh' // 네이버지도 세로 길이
         }}
         defaultCenter={{ lat: 35.954722, lng: 127.670833 }} // 지도 초기 위치
         defaultZoom={7} // 지도 초기 확대 배율
