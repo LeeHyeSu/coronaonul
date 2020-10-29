@@ -1,5 +1,4 @@
 .naverMap {
   position: relative;
-  top: 140px;
-  left: 25%;
+  border-radius: 10px;
 }

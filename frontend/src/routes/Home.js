@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import { HashRouter as Router, Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faVirus, faVial, faFileAlt, faHeadSideCough, faHeart, faDatabase } from "@fortawesome/free-solid-svg-icons";
+import Map from "../Components/Map";
+import Nav from "../Components/Nav";
 import "../Components/css/styles.css";
-import Map from "../Components/Map"
+
 
 const content = [
   {
@@ -27,120 +26,20 @@ const useTabs = (initialTab, allTabs) => {
   };
 };
 
-const Home = (props) => {
-  const [dateTime, setDateTime] = useState(new Date());
+const Home = () => {
   const { currentItem, changeItem } = useTabs(0, content);
-  // const [overlay, setOverlay] = useState(false);
-  const { lat, lon, name, temp } = props;
-  // const initialLocationState = {
-  //   lat: null,
-  //   lng: null
-  // }
-  // const [{lat, lng}, setLocation] = useState(initialLocationState);
-  // let geolocationMounted = true;
-
-  // const handleGeolocation = e => {
-  //   if(geolocationMounted) {
-  //     setLocation({
-  //       lat: e.coords.latitude,
-  //       lng: e.coords.longitude
-  //     })
-  //   }
-  // }
-  
-
-
-  useEffect(() => {
-    const id = setInterval(() => setDateTime(new Date()), 1000);
-    return () => {
-        clearInterval(id);
-    }
-  }, []);
-
-  // useEffect(() => {
-  //   navigator.geolocation.getCurrentPosition(handleGeolocation);
-  //   const geolocationWatchId = navigator.geolocation.watchPosition(handleGeolocation);
-  
-  //   return() => {
-  //     geolocationMounted = false;
-  //     navigator.geolocation.clearWatch(geolocationWatchId);
-  //   }
-  // }, []);
-
 
   return (
     <div className="home">
-      <div className="home__nav">
-        <div className="nav__title">
-          <div className="nav__icon"><FontAwesomeIcon icon={faVirus} size="2x"/></div>
-            <Router>
-              <Link to="/" className="text-link">코로나오늘</Link>
-            </Router>
-        </div>
-
-        <div className="nav__date">
-          {`${dateTime.toLocaleDateString()}`}
-        </div>
-
-        <div className="nav__city">
-          {/* {lat}, {lng} */}
-          {/* {lat}, {lon}, {name}, {temp} */}
-          city
-        </div>
-          <ul className="nav__lists">
-            <li className="nav__list">
-              <Router>
-                <Link to="/" className="text-link">
-                  <div className="nav__icon"><FontAwesomeIcon icon={faFileAlt} /></div>
-                  <div className="nav__listTitle">코로나 현황</div>
-                </Link>
-              </Router>
-                
-            </li>
-            <li className="nav__list">
-              <Router>
-                <Link to="/symptoms" className="text-link">
-                  <div className="nav__icon"><FontAwesomeIcon icon={faHeadSideCough} /></div>
-                  <div className="nav__listTitle">증상</div>
-                </Link>
-              </Router>
-            </li>
-            <li className="nav__list">
-              <Router>
-                <Link to="/selftest" className="text-link">
-                  <div className="nav__icon"><FontAwesomeIcon icon={faVial} /></div>
-                  <div className="nav__listTitle">자가테스트</div>
-                </Link>
-              </Router>
-            </li>
-            <li className="nav__list">
-              <Router>
-                <Link to="/prevention" className="text-link">
-                  <div className="nav__icon"><FontAwesomeIcon icon={faHeart} /></div>
-                  <div className="nav__listTitle">코로나 예방법</div>
-                </Link>
-              </Router>
-            </li>
-            <li className="nav__list">
-              <Router>
-                <Link to="/source" className="text-link">
-                  <div className="nav__icon"><FontAwesomeIcon icon={faDatabase} /></div>
-                  <div className="nav__listTitle">출처</div>
-                </Link>
-              </Router>
-            </li>
-          </ul>
-      </div>
+      <Nav />
 
       <main className="main">
         <div className="main__header">
-        {content.map((section, index) => (
-        <span className="figure-toggle" onClick={() => changeItem(index)}>{section.tab}</span>
-      ))}
-      
-            
-        
+          {content.map((section, index) => (
+            <span className="figure-toggle" onClick={() => changeItem(index)}>{section.tab}</span>
+          ))}
         </div>
+
         <div className="city-cards">
           <div className="city-card">
             <span className="card__title">확진자</span>
@@ -170,7 +69,9 @@ const Home = (props) => {
         </div>
         
         <div className="map-section">
-          <div className="map">지도</div>
+          <div className="map">
+            <Map />
+          </div>
         </div>
         <div className="nation-cards">
           <div className="nation-card">

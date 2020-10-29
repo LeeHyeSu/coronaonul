@@ -1,86 +1,75 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Home from '../routes/Home'
 import dotenv from 'dotenv';
 
 dotenv.config();
 
 class Position extends React.Component {
-    state = {
-      lat: null,
-      lon: null,
-      main: '',
-      name: '',
-      temp: '',
-      feels_like: '',
-      temp_min: '',
-      temp_max: '',
-      humidity: '',
-      errorNavMessage: '',
-      errorOpenWeatherMessage: ''
-    };
+  state = {
+    lat: undefined,
+    lon: undefined,  
+    // tempC: undefined,
+    city: undefined,
+    country: undefined,
+    errorMessage: undefined
+  };
   
-    componentDidMount() {
-      window.navigator.geolocation.getCurrentPosition(
-        position => {
-          this.setState({
-            lat: position.coords.latitude,
-            lon: position.coords.longitude
-          });
-          fetch(
-            `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${process.env.REACT_APP_OPENWEATHER_API_KEY}&units=metric`
-          )
-            .then(res => {
-              return res.json();
-            })
-            .then(result => {
-              const {
-                main: { temp, feels_like, temp_min, temp_max, humidity },
-                weather: [{ main }]
-              } = result;
-              const { name } = result;
-              this.setState({
-                main: main,
-                name: name,
-                temp: temp,
-                feels_like: feels_like,
-                temp_min: temp_min,
-                temp_max: temp_max,
-                humidity: humidity
-              });
-            })
-            .then(err => this.setState({ errorOpenWeatherMessage: err }));
-        },
-        error => this.setState({ errorMessage: error.message })
-      );
+  componentDidMount() {
+    if (navigator.geolocation) {
+      this.getPosition()
+      .then((position) => {      
+        this.getWeather(position.coords.latitude, position.coords.longitude)
+      })
+      .catch((err) => {
+        this.setState({ errorMessage: err.message });
+      });
     }
-  
-    getContent() {
-      if (!this.state.errorMessage && this.state.lat) {
-        return (
-          <Home
-            lat={this.state.lat}
-            lon={this.state.lon}
-            main={this.state.main}
-            name={this.state.name}
-            temp={this.state.temp}
-            feels_like={this.state.feels_like}
-            temp_min={this.state.temp_min}
-            temp_max={this.state.temp_max}
-            humidity={this.state.humidity}
-          ></Home>
-        );
-      }
-      if (this.state.errorMessage && !this.state.lat) {
-        return <div>{this.state.errorMessage}</div>;
-      }
-  
-      return <Home message="Please accept location request!"></Home>;
+    else {
+      alert("Geolocation not available");
     }
-  
-    render() {
-      return <div>{this.getContent()}</div>;
-    }
+    this.timerID = setInterval(
+      () => this.getWeather(this.state.lat, this.state.lon),
+      600000
+    );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerID);
   }
   
-  ReactDOM.render(<Position />, document.querySelector('#root'));
+  getPosition = (options) => {
+    return new Promise(function (resolve, reject) {
+      navigator.geolocation.getCurrentPosition(resolve, reject, options);
+    });
+  }
+
+  getWeather = async (lat, lon) => {     
+    const api_call = await fetch(`//api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=f3c59f07aa3c3d51508dd682e2c66808&units=metric`);
+    const data = await api_call.json();
+    this.setState({
+      lat: lat,
+      lon: lon,
+      city: data.name,
+      // tempC: Math.round(data.main.temp),
+    })
+  }
+  
+  render() {
+    if (this.state.city) {
+      return (
+        <div className="weather">   
+          <div>
+            <span className="weather-item">{this.state.city}</span> 
+            <span className="weather-item">
+              {/* {this.state.tempC} &deg;C  */}
+            </span>            
+          </div>
+        </div>         
+      )
+    }
+    else {
+      return null;
+    }
+  }
+} 
+  
+export default Position;
