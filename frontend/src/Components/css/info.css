@@ -1,0 +1,31 @@
+.coronaInfo {
+  background-color: white;
+  width: 88%;
+  height: 180vh;
+  position: relative;
+  left: 6%;
+  top: 3%;
+  border-radius: 30px;
+}
+
+.questions {
+  padding: 12px;
+}
+
+.question {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.source {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  color: #4b5cb6;
+  font-weight: 600;
+}
+
+.source:hover {
+  color: #3f4d99;
+  text-decoration: underline;
+}
