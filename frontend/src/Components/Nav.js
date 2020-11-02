@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { HashRouter as Router, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faVirus, faVial, faFileAlt, faHeadSideCough, faHeart, faDatabase } from "@fortawesome/free-solid-svg-icons";
+import { faVirus, faVial, faFileAlt, faHeadSideCough, faHeart, faDatabase, faMapMarkerAlt, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import "../Components/css/styles.css";
 import Position from "./Position";
 
@@ -25,8 +25,10 @@ function Nav() {
         </div>
         <div className="nav__date">
           {`${dateTime.toLocaleDateString()}`}
+          {/* <Clock format={'YYYY년 MM월 DD일 HH:mm:ss'} ticking={true} timezone={'US/Pacific'} /> */}
         </div>
         <div className="nav__city">
+          <FontAwesomeIcon icon={faMapMarkerAlt} className="nav-icon-map"/>
           <Position />
         </div>
 
@@ -38,9 +40,16 @@ function Nav() {
                 <div className="nav__listTitle">코로나 현황</div>
               </Link>
             </Router>
-              
           </li>
           <li className="nav__list">
+            <Router>
+              <Link to="/info" className="text-link">
+                <div className="nav__icon"><FontAwesomeIcon icon={faInfoCircle} className="nav-icon"/></div>
+                <div className="nav__listTitle">코로나 인포</div>
+              </Link>
+            </Router>
+          </li>
+          {/* <li className="nav__list">
             <Router>
               <Link to="/symptoms" className="text-link">
                 <div className="nav__icon"><FontAwesomeIcon icon={faHeadSideCough} className="nav-icon" /></div>
@@ -71,8 +80,12 @@ function Nav() {
                 <div className="nav__listTitle">출처</div>
               </Link>
             </Router>
-          </li>
+          </li> */}
         </ul>
+        <div className="nav__footer">
+          <p>Copyright © 2020 코로나오늘</p>
+          <span className="nav__github" onClick={() => window.open("https://github.com/LeeHyeSu/coronaonul", "_blank")}>Github</span>
+        </div>
       </div>
     );
 }

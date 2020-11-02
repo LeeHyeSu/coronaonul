@@ -13,7 +13,9 @@ function NaverMapAPI() {
         }}
         defaultCenter={{ lat: 35.954722, lng: 127.670833 }} // 지도 초기 위치
         defaultZoom={7} // 지도 초기 확대 배율
-      />
+      >
+        
+      </NaverMap>
     );
   }
   

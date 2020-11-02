@@ -41,13 +41,19 @@
   margin: 20px;
   border-radius: 10px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  transition: transform 0.2s;
+}
+
+.city-card:hover {
+  transform: scale(1.1);
 }
 
 .card__title {
   position: absolute;
   font-weight: 600;
-  padding: 10px;
+  padding: 10px 0 0 10px;
   color: #040317;
+  cursor: pointer;
 }
 
 .city-figure {

@@ -3,7 +3,6 @@ import Map from "../Components/Map";
 import Nav from "../Components/Nav";
 import "../Components/css/styles.css";
 
-
 const content = [
   {
     tab: "오늘",
@@ -75,55 +74,55 @@ const Home = () => {
         </div>
         <div className="nation-cards">
           <div className="nation-card">
-            <span className="card__title">서울</span>
+            <span className="card__title" onClick={() => window.open("https://www.seoul.go.kr/coronaV/coronaStatus.do", "_blank")}>서울</span>
           </div>
           <div className="nation-card">
-            <span className="card__title">부산</span>
+            <span className="card__title" onClick={() => window.open("http://www.busan.go.kr/covid19/Corona19.do", "_blank")}>부산</span>
           </div>
           <div className="nation-card">
-            <span className="card__title">대구</span>
+            <span className="card__title" onClick={() => window.open("http://covid19.daegu.go.kr/", "_blank")}>대구</span>
           </div>
           <div className="nation-card">
-            <span className="card__title">인천</span>
+            <span className="card__title" onClick={() => window.open("https://www.incheon.go.kr/health/HE020409", "_blank")}>인천</span>
           </div>
           <div className="nation-card">
-            <span className="card__title">광주</span>
+            <span className="card__title" onClick={() => window.open("https://www.gwangju.go.kr/c19/", "_blank")}>광주</span>
           </div>
           <div className="nation-card">
-            <span className="card__title">대전</span>
+            <span className="card__title" onClick={() => window.open("https://www.daejeon.go.kr/corona19/index.do", "_blank")}>대전</span>
           </div>
           <div className="nation-card">
-            <span className="card__title">울산</span>
+            <span className="card__title" onClick={() => window.open("http://www.ulsan.go.kr/corona.jsp", "_blank")}>울산</span>
           </div>
           <div className="nation-card">
-            <span className="card__title">세종</span>
+            <span className="card__title" onClick={() => window.open("https://www.sejong.go.kr/bbs/R3273/list.do;jsessionid=TkEBjZ7uuRa9ggO9rKnMhqAgabvrRlXxModIjYh0paAI1bYfVbcUb6afegQHpm4C.Portal_WAS2_servlet_engine5?cmsNoStr=17465", "_blank")}>세종</span>
           </div>
           <div className="nation-card">
-            <span className="card__title">경기</span>
+            <span className="card__title" onClick={() => window.open("https://www.gg.go.kr/contents/contents.do?ciIdx=1150&menuId=2909", "_blank")}>경기</span>
           </div>
           <div className="nation-card">
-            <span className="card__title">강원</span>
+            <span className="card__title" onClick={() => window.open("http://www.provin.gangwon.kr/covid-19.html", "_blank")}>강원</span>
           </div>
           <div className="nation-card">
-            <span className="card__title">충북</span>
+            <span className="card__title" onClick={() => window.open("http://www1.chungbuk.go.kr/covid-19/index.do", "_blank")}>충북</span>
           </div>
           <div className="nation-card">
-            <span className="card__title">충남</span>
+            <span className="card__title" onClick={() => window.open("http://www.chungnam.go.kr/coronaStatus.do", "_blank")}>충남</span>
           </div>
           <div className="nation-card">
-            <span className="card__title">전북</span>
+            <span className="card__title" onClick={() => window.open("https://www.jeonbuk.go.kr/board/list.jeonbuk?boardId=BBS_0000105&menuCd=DOM_000000110001000000&contentsSid=1219&cpath=", "_blank")}>전북</span>
           </div>
           <div className="nation-card">
-            <span className="card__title">전남</span>
+            <span className="card__title" onClick={() => window.open("https://www.jeonnam.go.kr/coronaMainPage.do", "_blank")}>전남</span>
           </div>
           <div className="nation-card">
-            <span className="card__title">경북</span>
+            <span className="card__title" onClick={() => window.open("http://www.gb.go.kr/Main/open_contents/section/wel/page.do?mnu_uid=5857&LARGE_CODE=360&MEDIUM_CODE=90&SMALL_CODE=10&mnu_order=2", "_blank")}>경북</span>
           </div>
           <div className="nation-card">
-            <span className="card__title">경남</span>
+            <span className="card__title" onClick={() => window.open("http://xn--19-q81ii1knc140d892b.kr/main/main.do", "_blank")}>경남</span>
           </div>
           <div className="nation-card">
-            <span className="card__title">제주</span>
+            <span className="card__title" onClick={() => window.open("https://www.jeju.go.kr/corona19.jsp", "_blank")}>제주</span>
           </div>
         </div>
       </main>
