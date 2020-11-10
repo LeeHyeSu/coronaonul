@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { HashRouter as Router, Link } from "react-router-dom";
 import Map from "../Components/Map";
 import Nav from "../Components/Nav";
 import "../Components/css/styles.css";
@@ -6,14 +7,14 @@ import "../Components/css/styles.css";
 const content = [
   {
     tab: "오늘",
-    content: ["오늘 확진자", "오늘 검사중", "오늘 완치자", "오늘 사망자"]
+    content: ["+10", "+20", "+5", "+2"]
   },
   {
     tab: " | "
   },
   {
     tab: "누적",
-    content: ["누적 확진자", "누적 검사중", "누적 완치자", "누적 사망자"]
+    content: ["100", "200", "300", "15"]
   }
 ]
 
@@ -33,13 +34,13 @@ const Home = () => {
       <Nav />
 
       <main className="main">
-        <div className="main__header">
+        {/* <div className="main__header">
           {content.map((section, index) => (
             <span className="figure-toggle" onClick={() => changeItem(index)}>{section.tab}</span>
           ))}
-        </div>
+        </div> */}
 
-        <div className="city-cards">
+        {/* <div className="city-cards">
           <div className="city-card">
             <span className="card__title">확진자</span>
             <div className="city-figure confirmed">
@@ -71,25 +72,59 @@ const Home = () => {
           <div className="map">
             <Map />
           </div>
-        </div>
+        </div> */}
         <div className="nation-cards">
           <div className="nation-card">
-            <span className="card__title" onClick={() => window.open("https://www.seoul.go.kr/coronaV/coronaStatus.do", "_blank")}>서울</span>
+            <Router>
+              <Link to="/detail">
+                <span className="card__title" onClick={() => window.open("https://www.seoul.go.kr/coronaV/coronaStatus.do", "_blank")}>서울</span>
+                <div className="card__figure">
+                  <div className="confirmed">
+                    <span className="figure-title">확진자</span>
+                    <div className="figure-num">+13</div>
+                  </div>
+                  <div className="card__bottom">
+                    <div className="testing">
+                      <span className="figure-title">지역 발생</span>
+                      <span className="figure-num">
+                        13
+                      </span>
+                    </div>
+                    <div className="testing">
+                      <span className="figure-title">해외 유입</span>
+                      <span className="figure-num">
+                        0
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </Router>
           </div>
           <div className="nation-card">
             <span className="card__title" onClick={() => window.open("http://www.busan.go.kr/covid19/Corona19.do", "_blank")}>부산</span>
+            <div className="card__figure">
+            </div>
           </div>
           <div className="nation-card">
             <span className="card__title" onClick={() => window.open("http://covid19.daegu.go.kr/", "_blank")}>대구</span>
+            <div className="card__figure">
+            </div>
           </div>
           <div className="nation-card">
             <span className="card__title" onClick={() => window.open("https://www.incheon.go.kr/health/HE020409", "_blank")}>인천</span>
+            <div className="card__figure">
+            </div>
           </div>
           <div className="nation-card">
             <span className="card__title" onClick={() => window.open("https://www.gwangju.go.kr/c19/", "_blank")}>광주</span>
+            <div className="card__figure">
+            </div>
           </div>
           <div className="nation-card">
             <span className="card__title" onClick={() => window.open("https://www.daejeon.go.kr/corona19/index.do", "_blank")}>대전</span>
+            <div className="card__figure">
+            </div>
           </div>
           <div className="nation-card">
             <span className="card__title" onClick={() => window.open("http://www.ulsan.go.kr/corona.jsp", "_blank")}>울산</span>
@@ -124,9 +159,11 @@ const Home = () => {
           <div className="nation-card">
             <span className="card__title" onClick={() => window.open("https://www.jeju.go.kr/corona19.jsp", "_blank")}>제주</span>
           </div>
+          <div className="nation-card">
+            <span className="card__title">검역</span>
+          </div>
         </div>
       </main>
-      
     </div>
   );
 }

@@ -1,0 +1,111 @@
+.detail__main {
+  width: 86%;
+  height: 100vh;
+  /* padding: 20px; */
+  position: absolute;
+  left: 14%;
+  display: flex;
+  flex-direction: column;
+  background-color: #f1f3fb;
+}
+
+.detail__wrap {
+  /* background-color: white; */
+  width: 94%;
+  height: 94vh;
+  padding: 15px;
+  position: relative;
+  left: 3%;
+  top: 3%;
+  border-radius: 20px;
+}
+
+.detail__header {
+  display: flex;
+  color: #070c16;
+}
+
+.detail__chart {
+  background-color: white;
+  position: relative;
+  width: 100%;
+  height: 60%;
+  left: 0;
+  border-radius: 20px;
+  display: flex;
+}
+
+.chart__left {
+  width: 50%;
+  padding: 15px;
+}
+
+.graph__title {
+  position: relative;
+  top: 20px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.divider {
+  position: relative;
+  top: 3%;
+  height: 90%;
+  width: 0px;
+  border-right: 0px;
+}
+
+.chart__right {
+  width: 50%;
+  padding: 10px;
+}
+
+.chart-title {
+  position: relative;
+  top: 24px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.chart {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: 20%;
+  width: 100%;
+}
+
+.chart__row {
+  display: flex;
+}
+
+.chart__figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #fbfcfc;
+  padding: 15px;
+  margin: 10px;
+  width: 100%;
+  border-radius: 15px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.chart__title {
+  font-weight: 600;
+}
+
+.figure__num {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.more {
+  position: absolute;
+  right: 15px;
+  top: 90%;
+  cursor: pointer;
+  color: #3f4d99;
+  text-decoration: underline;
+}
