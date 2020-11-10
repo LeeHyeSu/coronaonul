@@ -2,9 +2,7 @@ import React from 'react';
 import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "../routes/Home"
 import Info from "../routes/Info"
-import Selftest from "../routes/Selftest"
-import Prevention from "../routes/Prevention"
-import Source from "../routes/Source"
+import Detail from "../routes/Detail"
 
 function App() {
   return(
@@ -12,9 +10,7 @@ function App() {
     <Switch>
       <Route exact path="/" component={Home} />
       <Route path="/info" component={Info} />
-      <Route path="/selftest" component={Selftest} />
-      <Route path="/prevention" component={Prevention} />
-      <Route path="/source" component={Source} />
+      <Route path="/detail" component={Detail} />
     </Switch>
   </Router>
   );
