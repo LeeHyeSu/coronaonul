@@ -1,22 +1,16 @@
 package com.coronaonul.coronaonul.controller;
 
 import com.coronaonul.coronaonul.service.SidoInfStateService;
-import com.coronaonul.coronaonul.vo.IncDecByDate;
+import com.coronaonul.coronaonul.vo.Coronic;
+import com.coronaonul.coronaonul.vo.SidoInfState;
 import com.coronaonul.coronaonul.vo.SidoInfStateItemDTO;
-import com.coronaonul.coronaonul.vo.SidoInfStateResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.text.ParseException;
 import java.util.List;
 
@@ -26,14 +20,9 @@ public class SidoInfStateController {
     @Autowired
     SidoInfStateService sidoInfStateService;
 
-    @GetMapping("/sido-inf-state")
-    public List<SidoInfStateItemDTO> requestSidoInfState() throws URISyntaxException {
+    @GetMapping("/coronaonul")
+    public List<SidoInfState> requestSidoInfState() throws URISyntaxException, ParseException {
         return sidoInfStateService.getItemsFromOpenApi();
-    }
-
-    @GetMapping("/sido-inf-state/{sido}")
-    public List<IncDecByDate> requestWeekProgress(@PathVariable String sido) throws URISyntaxException, ParseException {
-        return sidoInfStateService.getWeekProgress(sido);
     }
 
 }
