@@ -4,12 +4,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-public class IncDecByDate {
+public class Coronic {  // coronic : 코로나19 감염 확진자
 
     private String date;            // 날짜
-    private String incDec;          // 전일대비 증감 수(오늘 확진자수)
+    private String number;          // 확진자 수
 
-    public IncDecByDate(String date) {
+    public Coronic(String date) {
         this.date = date;
     }
+
 }
