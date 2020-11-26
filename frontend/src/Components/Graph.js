@@ -8,6 +8,7 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  Legend,
 } from "recharts";
 
 const today = moment().format("MM-DD");
@@ -21,36 +22,50 @@ const sixDayBefore = moment().subtract(6, "d").format("MM-DD");
 const data = [
   {
     name: `${sixDayBefore}`,
+    지역발생: 20,
+    해외유입: 10,
     확진자: 30,
   },
   {
     name: `${fiveDayBefore}`,
+    지역발생: 15,
+    해외유입: 5,
     확진자: 20,
   },
   {
     name: `${fourDayBefore}`,
+    지역발생: 16,
+    해외유입: 2,
     확진자: 18,
   },
   {
     name: `${threeDayBefore}`,
-    확진자: 38,
+    지역발생: 27,
+    해외유입: 13,
+    확진자: 40,
   },
   {
     name: `${twoDayBefore}`,
+    지역발생: 43,
+    해외유입: 14,
     확진자: 57,
   },
   {
     name: `${oneDayBefore}`,
+    지역발생: 33,
+    해외유입: 7,
     확진자: 40,
   },
   {
     name: `${today}`,
-    확진자: 46,
+    지역발생: 27,
+    해외유입: 9,
+    확진자: 36,
   },
 ];
 
 export default class Example extends PureComponent {
-  static jsfiddleUrl = "https://jsfiddle.net/alidingling/30763kr7/";
+  static jsfiddleUrl = "https://jsfiddle.net/alidingling/90v76x08/";
 
   render() {
     return (
@@ -61,7 +76,7 @@ export default class Example extends PureComponent {
             margin={{
               top: 60,
               right: 0,
-              left: -30,
+              left: -20,
               bottom: 5,
             }}
           >
@@ -69,8 +84,9 @@ export default class Example extends PureComponent {
             <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />
-            <Bar dataKey="확진자" fill="#8884d8" />
-            {/* <Bar dataKey="uv" fill="#82ca9d" /> */}
+            <Legend />
+            <Bar dataKey="해외유입" stackId="a" fill="#82ca9d" />
+            <Bar dataKey="지역발생" stackId="a" fill="#8884d8" />
           </BarChart>
         </ResponsiveContainer>
       </div>
