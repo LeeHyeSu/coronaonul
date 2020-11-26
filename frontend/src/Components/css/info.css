@@ -1,0 +1,46 @@
+.infoMain {
+  height: 300vh;
+}
+
+.coronaInfo {
+  background-color: white;
+  width: 88%;
+  height: 280vh;
+  position: relative;
+  left: 6%;
+  top: 2%;
+  border-radius: 30px;
+}
+
+.questions {
+  padding: 12px;
+}
+
+.question {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.source {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  color: #4b5cb6;
+  font-weight: 600;
+}
+
+.source:hover {
+  color: #3f4d99;
+  text-decoration: underline;
+}
+
+@media screen and (max-width: 767px) {
+  .infoMain {
+    height: 225vh;
+  }
+
+  .coronaInfo {
+    top: 3%;
+    height: 215vh;
+  }
+}

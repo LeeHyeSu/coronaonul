@@ -1,0 +1,155 @@
+.home {
+  display: flex;
+}
+
+.main {
+  width: 86%;
+  height: 200vh;
+  position: absolute;
+  left: 14%;
+  display: flex;
+  flex-direction: column;
+  background-color: #f1f3fb;
+}
+
+.figure-toggle:nth-child(1),
+.figure-toggle:nth-child(3) {
+  cursor: pointer;
+}
+
+.figure-toggle:nth-child(2) {
+  pointer-events: none;
+}
+
+/* .city-cards {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  top: 30px;
+}
+
+.city-card {
+  background-color: white;
+  width: 18%;
+  height: 140px;
+  margin: 20px;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  transition: transform 0.2s;
+}
+
+.city-card:hover {
+  transform: scale(1.1);
+} */
+
+.card__title {
+  position: absolute;
+  font-weight: 600;
+  padding: 10px 0 0 10px;
+  color: #040317;
+  cursor: pointer;
+}
+
+.confirmed {
+  color: #fd4e71;
+}
+
+.death {
+  color: #aa92fc;
+}
+
+.testing {
+  color: #ff7921;
+}
+
+.recovered {
+  color: #98e240;
+}
+
+/* .map-section {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  top: 80px;
+}
+
+.map {
+  background-color: white;
+  width: 60%;
+  height: 600px;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+} */
+
+.nation-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-items: center;
+  width: 100%;
+  position: relative;
+  top: 60px;
+}
+
+.nation-card {
+  background-color: white;
+  width: 73%;
+  height: 140px;
+  margin: 20px;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  transition: transform 0.2s;
+  color: inherit;
+  text-decoration: none;
+}
+
+.nation-card:hover {
+  transform: scale(1.1);
+}
+
+.card__figure {
+  position: relative;
+  top: 35px;
+  /* display: grid;
+  grid-template-columns: repeat(2, 1fr); */
+  display: flex;
+  flex-direction: column;
+}
+
+.card__bottom {
+  display: flex;
+  justify-content: space-around;
+}
+
+.confirmed,
+.testing,
+.recovered,
+.death {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.figure-title {
+  color: black;
+  font-size: 0.9em;
+}
+
+.figure-num {
+  font-weight: 600;
+  font-size: 1.1em;
+}
+
+@media screen and (max-width: 767px) {
+  .main {
+    width: 100%;
+    height: 180vh;
+    position: absolute;
+    left: 0;
+  }
+}
+
+@media screen and (max-width: 1035px) {
+  .nation-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
