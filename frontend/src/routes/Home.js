@@ -1,34 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { HashRouter as Router, Link } from "react-router-dom";
-import Map from "../Components/Map";
 import Nav from "../Components/Nav";
 import Graph from "../Components/Graph";
+import axios from "axios";
 import "../Components/css/styles.css";
 
-// const content = [
-//   {
-//     tab: "오늘",
-//     content: ["+10", "+20", "+5", "+2"]
-//   },
-//   {
-//     tab: " | "
-//   },
-//   {
-//     tab: "누적",
-//     content: ["100", "200", "300", "15"]
-//   }
-// ]
-
-// const useTabs = (initialTab, allTabs) => {
-//   const [currentIndex, setCurrentIndex] = useState(initialTab);
-//   return {
-//     currentItem: allTabs[currentIndex],
-//     changeItem: setCurrentIndex
-//   };
-// };
-
 const Home = () => {
-  // const { currentItem, changeItem } = useTabs(0, content);
+  useEffect(() => {
+    getFigure();
+  }, []);
+
+  const getFigure = () => {
+    axios
+      .get("")
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => alert(err));
+  };
 
   return (
     <div className="home">
