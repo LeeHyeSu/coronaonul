@@ -3,6 +3,7 @@ package com.coronaonul.coronaonul.service;
 import com.coronaonul.coronaonul.vo.Coronic;
 import com.coronaonul.coronaonul.vo.SidoInfStateItemDTO;
 import com.coronaonul.coronaonul.vo.SidoInfStateResponseVO;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -17,8 +18,12 @@ import java.util.List;
 @Service
 public class SidoInfStateService {
 
-    private final String serviceKey = "vmdBKFza1pRM8jv8FO2uFsPNEXOCLbCf%2FefaY0zpCELMKWlCM5SaitmmsIoTENR6ik0xqaY%2BsAOUs1Du%2FMLrvQ%3D%3D";
-    private final String SidoInfStateURL = "http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson";
+    @Value("${serviceKey}")
+    private String serviceKey;
+
+    @Value("${sidoInfStateURL}")
+    private String sidoInfStateURL;
+
     private RestTemplate restTemplate = new RestTemplate();
 
     public List<SidoInfStateItemDTO> getItemsFromOpenApi() {
@@ -27,12 +32,16 @@ public class SidoInfStateService {
         String createDt = getCreateDt();
 
         try {
-            URI uri = new URI(SidoInfStateURL + "?serviceKey=" + serviceKey
+            URI uri = new URI(sidoInfStateURL + "?serviceKey=" + serviceKey
                     + "&pageNo=1" + "&numOfRows=10"
                     + "&startCreateDt=" + createDt + "&endCreateDt=" + createDt);
 
             SidoInfStateResponseVO response = restTemplate.getForObject(uri, SidoInfStateResponseVO.class);
             items = response.getBody().getItems();
+
+            for (SidoInfStateItemDTO item : items) {
+                System.out.println(item.toString());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,7 +71,7 @@ public class SidoInfStateService {
 
             // 날짜 별로 Open Api 를 호출
             for (Coronic coronic : weekData) {
-                URI uri = new URI(SidoInfStateURL + "?serviceKey=" + serviceKey
+                URI uri = new URI(sidoInfStateURL + "?serviceKey=" + serviceKey
                         + "&pageNo=1" + "&numOfRows=10"
                         + "&startCreateDt=" + coronic.getDate() + "&endCreateDt=" + coronic.getDate());
 
@@ -91,7 +100,10 @@ public class SidoInfStateService {
 
         try {
             DateFormat df = new SimpleDateFormat("yyyyMMdd");
+
             Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.DATE, -1);
+
             date = df.format(cal.getTime());
         } catch (Exception e) {
             e.printStackTrace();
