@@ -1,6 +1,7 @@
 package com.coronaonul.coronaonul.service;
 
-import com.coronaonul.coronaonul.vo.Coronic;
+import com.coronaonul.coronaonul.vo.NumberByDate;
+import com.coronaonul.coronaonul.vo.SidoDetails;
 import com.coronaonul.coronaonul.vo.SidoInfStateItemDTO;
 import com.coronaonul.coronaonul.vo.SidoInfStateResponseVO;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,11 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -38,10 +38,6 @@ public class SidoInfStateService {
 
             SidoInfStateResponseVO response = restTemplate.getForObject(uri, SidoInfStateResponseVO.class);
             items = response.getBody().getItems();
-
-            for (SidoInfStateItemDTO item : items) {
-                System.out.println(item.toString());
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -50,30 +46,42 @@ public class SidoInfStateService {
 
     }
 
-    public List<Coronic> getWeekData(String sido) {
+    public SidoDetails getSidoDetails(String sido) {
 
-        List<Coronic> weekData = new ArrayList<>();
-        String createDt = getCreateDt();
+        SidoDetails sidoDetails = new SidoDetails();
+
+        List<SidoInfStateItemDTO> items = getItemsFromOpenApi();
+
+        for (SidoInfStateItemDTO item : items) {
+            if (item.getGubunEn().equals(sido)) {
+                sidoDetails.setSidoInfState(item);
+            }
+        }
+
+        sidoDetails.setWeekData(getWeekData(sido));
+
+        return sidoDetails;
+    }
+
+    public List<NumberByDate> getWeekData(String sido) {
+
+        List<NumberByDate> weekData = new ArrayList<>();
+
+        LocalDateTime now = LocalDateTime.now();
+
+        // 현재 날짜로부터 일주일 전까지의 날짜 리스트 생성
+        for (int i = 6; i > 0; i--) {
+            String date = now.minusDays(i).format(DateTimeFormatter.BASIC_ISO_DATE);
+            weekData.add(new NumberByDate(date));
+        }
+        weekData.add(new NumberByDate(getCreateDt()));
 
         try {
-            Calendar cal = Calendar.getInstance();
-            DateFormat df = new SimpleDateFormat("yyyyMMdd");
-            Date date = df.parse(createDt);
-            cal.setTime(date);
-
-            // 현재 날짜로부터 일주일 전까지의 날짜 리스트 생성
-            for (int i = 6; i > 0; i--) {
-                cal.add(Calendar.DATE, -i);
-                weekData.add(new Coronic(df.format(cal.getTime())));
-                cal.setTime(date);
-            }
-            weekData.add(new Coronic(createDt));
-
             // 날짜 별로 Open Api 를 호출
-            for (Coronic coronic : weekData) {
+            for (NumberByDate numberByDate : weekData) {
                 URI uri = new URI(sidoInfStateURL + "?serviceKey=" + serviceKey
                         + "&pageNo=1" + "&numOfRows=10"
-                        + "&startCreateDt=" + coronic.getDate() + "&endCreateDt=" + coronic.getDate());
+                        + "&startCreateDt=" + numberByDate.getDate() + "&endCreateDt=" + numberByDate.getDate());
 
                 SidoInfStateResponseVO response = restTemplate.getForObject(uri, SidoInfStateResponseVO.class);
                 List<SidoInfStateItemDTO> items = response.getBody().getItems();
@@ -81,7 +89,7 @@ public class SidoInfStateService {
                 // items 를 순회하면서 해당 시·도 이면 incDecByDate 에 오늘 확진자 수(IncDec) 데이터 set
                 for (SidoInfStateItemDTO item : items) {
                     if (item.getGubunEn().equals(sido)) {
-                        coronic.setNumber(item.getIncDec());
+                        numberByDate.setNumber(item.getIncDec());
                         break;
                     }
                 }
@@ -96,20 +104,17 @@ public class SidoInfStateService {
 
     public String getCreateDt() {
 
-        String date = "";
+        LocalTime currentTime = LocalTime.now();
+        LocalTime referenceTime = LocalTime.of(10, 0, 0);
 
-        try {
-            DateFormat df = new SimpleDateFormat("yyyyMMdd");
-
-            Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.DATE, -1);
-
-            date = df.format(cal.getTime());
-        } catch (Exception e) {
-            e.printStackTrace();
+        // 현재 시간이 기준 시간 (10:00 A.M.) 보다 이전 시간이라면 하루 전 날의 확진자 정보 제공
+        // 공공데이터 업데이트 시간 전에 api 호출 시 null 값을 반환하지 못하게 하기 위함
+        if (currentTime.isBefore(referenceTime)) {
+            return LocalDateTime.now().minusDays(1).format(DateTimeFormatter.BASIC_ISO_DATE);
+        } else {
+            return LocalDateTime.now().format(DateTimeFormatter.BASIC_ISO_DATE);
         }
 
-        return date;
     }
 
 }
