@@ -1,7 +1,6 @@
 package com.coronaonul.coronaonul.controller;
 
 import com.coronaonul.coronaonul.service.SidoInfStateService;
-import com.coronaonul.coronaonul.vo.NumberByDate;
 import com.coronaonul.coronaonul.vo.SidoDetails;
 import com.coronaonul.coronaonul.vo.SidoInfStateItemDTO;
 import org.springframework.beans.factory.annotation.Autowired;
