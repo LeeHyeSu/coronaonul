@@ -6,11 +6,14 @@ import "../Components/css/styles.css";
 export default () => {
   const regexp = /\B(?=(\d{3})+(?!\d))/g;
   const [data, loading] = useState([]);
+  const [totalData, setTotalData] = useState([]);
+
   useEffect(() => {
-    getFigure();
+    getData();
+    // getTotalData();
   }, []);
 
-  const getFigure = () => {
+  const getData = () => {
     axios
       .get("http://localhost:8080/coronaonul")
       .then(({ data }) => {
@@ -19,6 +22,16 @@ export default () => {
       .catch((err) => alert(err));
   };
 
+  // const getTotalData = () => {
+  //   axios
+  //     .get("http://localhost:8080/coronaonul/Total")
+  //     .then(({ data }) => {
+  //       setTotalData(data.weekData);
+  //       console.log(data.weekData);
+  //     })
+  //     .catch((err) => alert(err));
+  // };
+
   return (
     <div className="detail__wrap">
       <div className="detail__content">
@@ -26,6 +39,9 @@ export default () => {
           <span className="graph__title">
             전국 일일 확진자 발생 추이 그래프
           </span>
+          {/* <GraphData>
+            {totalData?.map((d) => <Graph weekCoronicData={d.number} />)[0]}
+          </GraphData> */}
           <Graph />
         </div>
         <hr className="divider"></hr>

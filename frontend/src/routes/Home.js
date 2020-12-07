@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Nav from "../Components/Nav";
-
 import NationCard from "../Components/NationCard";
 import CountryCard from "../Components/CountryCard";
 import axios from "axios";
