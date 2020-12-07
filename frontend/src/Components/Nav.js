@@ -7,7 +7,6 @@ import {
   faMapMarkerAlt,
   faInfoCircle,
   faBars,
-  faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import "../Components/css/styles.css";
 import Position from "./Position";

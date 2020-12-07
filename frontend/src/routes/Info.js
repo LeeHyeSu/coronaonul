@@ -11,7 +11,7 @@ function Info() {
       <main className="main infoMain">
         <div className="coronaInfo">
           <div className="questions">
-            <div className="question">1️⃣ 코로나-19는 무엇인가요?</div>
+            <span className="question">1️⃣ 코로나-19는 무엇인가요?</span>
             <div className="answer">
               <p>
                 중국 우한에서 발생한 폐렴은 신종 코로나 바이러스인 ‘2019-nCoV'
@@ -44,7 +44,7 @@ function Info() {
             </span>
           </div>
           <div className="questions">
-            <div className="question">2️⃣ 코로나-19 증상은 무엇인가요?</div>
+            <span className="question">2️⃣ 코로나-19 증상은 무엇인가요?</span>
             <div className="answer">
               <p>
                 코로나19 감염 시의 증상은 사람마다 다릅니다. 대부분의 감염자가
@@ -89,7 +89,9 @@ function Info() {
             </span>
           </div>
           <div className="questions">
-            <div className="question">3️⃣ 코로나-19 예방방법은 무엇인가요?</div>
+            <span className="question">
+              3️⃣ 코로나-19 예방방법은 무엇인가요?
+            </span>
             <div className="answer">
               <p>
                 ✔ 백신 없음 <br></br>
@@ -117,11 +119,12 @@ function Info() {
             </span>
           </div>
           <div className="questions">
-            <div className="question">4️⃣ 사회적 거리두기</div>
+            <span className="question">4️⃣ 사회적 거리두기</span>
             <div className="answer">
-              <p>
+              <p></p>
+              <div>
                 <Slider />
-              </p>
+              </div>
             </div>
             <span
               className="source"

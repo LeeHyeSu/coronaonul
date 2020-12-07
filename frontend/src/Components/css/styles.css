@@ -4,6 +4,7 @@
 @import "./info.css";
 @import "./detail.css";
 @import "./modal.css";
+@import "./nationCard.css";
 
 * {
   box-sizing: border-box;
