@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Nav from "../Components/Nav";
 import NationCard from "../Components/NationCard";
-import CountryCard from "../Components/CountryCard";
+import TotalCard from "../Components/TotalCard";
 import axios from "axios";
 import "../Components/css/styles.css";
 import styled from "styled-components";
@@ -40,11 +40,12 @@ const Home = () => {
     <div className="home">
       <Nav />
       <main className="main">
-        <CountryCard />
+        <TotalCard />
         <NationCards>
           {data
             ?.map((d) => (
               <NationCard
+                gubunEn={d.gubunEn}
                 gubun={d.gubun}
                 incDec={d.incDec}
                 localOccCnt={d.localOccCnt}

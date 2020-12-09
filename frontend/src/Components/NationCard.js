@@ -18,11 +18,11 @@ const Container = styled.div`
   }
 `;
 
-export default ({ gubun, incDec, localOccCnt, overFlowCnt }) => {
+export default ({ gubunEn, gubun, incDec, localOccCnt, overFlowCnt }) => {
   return (
     <Container>
       <Router>
-        <Link to="/detail" style={{ textDecoration: "none" }}>
+        <Link to={`/detail/${gubunEn}`} style={{ textDecoration: "none" }}>
           <span className="card__title">{gubun}</span>
           <div className="card__figure">
             <div className="confirmed">
