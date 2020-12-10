@@ -8,6 +8,7 @@ import {
   faInfoCircle,
   faBars,
 } from "@fortawesome/free-solid-svg-icons";
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import "../Components/css/styles.css";
 import Position from "./Position";
 import Modal from "./Modal";
@@ -71,11 +72,9 @@ function Nav() {
             window.open("https://github.com/LeeHyeSu/coronaonul", "_blank")
           }
         >
-          Github
+          <FontAwesomeIcon icon={faGithub} /> Github
         </span>
       </div>
-
-      {/* Modal */}
 
       <button
         className="btnModal"

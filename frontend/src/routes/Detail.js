@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import Nav from "../Components/Nav";
-import Graph from "../Components/Graph";
+import NationGraph from "../Components/NationGraph";
 import "../Components/css/styles.css";
 
 function Detail() {
@@ -50,7 +50,7 @@ function Detail() {
               <span className="graph__title">
                 {nationData?.gubun} 일일 확진자 발생 추이 그래프
               </span>
-              <Graph weekData={weekData.map((d) => d.number)} />
+              <NationGraph weekData={weekData.map((d) => d.number)} />
             </div>
             <hr className="divider"></hr>
             <div className="chart__right">

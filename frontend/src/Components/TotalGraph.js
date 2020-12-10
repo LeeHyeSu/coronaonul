@@ -8,7 +8,6 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Legend,
 } from "recharts";
 
 const today = moment().format("MM-DD");
@@ -75,7 +74,6 @@ export default ({ weekData }) => {
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
-          <Legend />
           <Bar dataKey="확진자" stackId="a" fill="#82ca9d" />
         </BarChart>
       </ResponsiveContainer>
