@@ -1,8 +1,10 @@
 package com.coronaonul.coronaonul.vo;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class NumberByDate {
 
     private String date;            // 날짜
