@@ -1,22 +1,26 @@
 package com.coronaonul.coronaonul.service;
 
-import com.coronaonul.coronaonul.vo.NumberByDate;
-import com.coronaonul.coronaonul.vo.SidoDetails;
-import com.coronaonul.coronaonul.vo.SidoInfStateItemDTO;
-import com.coronaonul.coronaonul.vo.SidoInfStateResponseVO;
+import com.coronaonul.coronaonul.domain.sidoinfstate.SidoInfState;
+import com.coronaonul.coronaonul.domain.sidoinfstate.SidoInfStateRepository;
+import com.coronaonul.coronaonul.vo.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 public class SidoInfStateService {
+
+    private final SidoInfStateRepository sidoInfStateRepository;
 
     @Value("${serviceKey}")
     private String serviceKey;
@@ -24,12 +28,36 @@ public class SidoInfStateService {
     @Value("${sidoInfStateURL}")
     private String sidoInfStateURL;
 
+    private String createDt = new CreateDate().getCreateDt();
+
     private RestTemplate restTemplate = new RestTemplate();
 
+    @Transactional
+    public void save(SidoInfStateItemDTO item) {
+        sidoInfStateRepository.save(item.toEntity());
+    }
+
+    @Transactional
+    public List<SidoInfStateItemDTO> findByDate() {
+
+        List<SidoInfState> sidoInfStateList = sidoInfStateRepository.findByDate(createDt);
+
+        if (!sidoInfStateList.isEmpty()) {
+            System.out.println("From Database");
+            return sidoInfStateList.stream()
+                    .map(SidoInfStateItemDTO::new)
+                    .collect(Collectors.toList());
+        } else {
+            System.out.println("call OpenApi");
+            return getItemsFromOpenApi();
+        }
+
+    }
+
+    @Transactional
     public List<SidoInfStateItemDTO> getItemsFromOpenApi() {
 
         List<SidoInfStateItemDTO> items = new ArrayList<>();
-        String createDt = getCreateDt();
 
         try {
             URI uri = new URI(sidoInfStateURL + "?serviceKey=" + serviceKey
@@ -38,6 +66,11 @@ public class SidoInfStateService {
 
             SidoInfStateResponseVO response = restTemplate.getForObject(uri, SidoInfStateResponseVO.class);
             items = response.getBody().getItems();
+
+            for (SidoInfStateItemDTO item : items) {
+                item.setStdDay(createDt);
+                save(item);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -46,15 +79,21 @@ public class SidoInfStateService {
 
     }
 
-    public SidoDetails getSidoDetails(String sido) {
+    @Transactional
+    public SidoDetails findBySido(String sido) {
 
         SidoDetails sidoDetails = new SidoDetails();
+        SidoInfState sidoInfState = sidoInfStateRepository.findByDateAndSido(createDt, sido);
 
-        List<SidoInfStateItemDTO> items = getItemsFromOpenApi();
+        if (sidoInfState != null) {
+            sidoDetails.setSidoInfState(new SidoInfStateItemDTO(sidoInfState));
+        } else {
+            List<SidoInfStateItemDTO> items = getItemsFromOpenApi();
 
-        for (SidoInfStateItemDTO item : items) {
-            if (item.getGubunEn().equals(sido)) {
-                sidoDetails.setSidoInfState(item);
+            for (SidoInfStateItemDTO item : items) {
+                if (item.getGubunEn().equals(sido)) {
+                    sidoDetails.setSidoInfState(item);
+                }
             }
         }
 
@@ -63,6 +102,7 @@ public class SidoInfStateService {
         return sidoDetails;
     }
 
+    @Transactional
     public List<NumberByDate> getWeekData(String sido) {
 
         List<NumberByDate> weekData = new ArrayList<>();
@@ -72,48 +112,52 @@ public class SidoInfStateService {
         // 현재 날짜로부터 일주일 전까지의 날짜 리스트 생성
         for (int i = 6; i > 0; i--) {
             String date = now.minusDays(i).format(DateTimeFormatter.BASIC_ISO_DATE);
-            weekData.add(new NumberByDate(date));
+
+            SidoInfState sidoInfState = sidoInfStateRepository.findByDateAndSido(date, sido);
+            if (sidoInfState != null) {
+                weekData.add(new NumberByDate(date, sidoInfState.getIncDec()));
+            } else {
+                weekData.add(new NumberByDate(date));
+            }
         }
-        weekData.add(new NumberByDate(getCreateDt()));
 
-        try {
-            // 날짜 별로 Open Api 를 호출
-            for (NumberByDate numberByDate : weekData) {
-                URI uri = new URI(sidoInfStateURL + "?serviceKey=" + serviceKey
-                        + "&pageNo=1" + "&numOfRows=10"
-                        + "&startCreateDt=" + numberByDate.getDate() + "&endCreateDt=" + numberByDate.getDate());
+        SidoInfState sidoInfState = sidoInfStateRepository.findByDateAndSido(createDt, sido);
+        if (sidoInfState != null) {
+            weekData.add(new NumberByDate(createDt, sidoInfState.getIncDec()));
+        } else {
+            weekData.add(new NumberByDate(createDt));
+        }
 
-                SidoInfStateResponseVO response = restTemplate.getForObject(uri, SidoInfStateResponseVO.class);
-                List<SidoInfStateItemDTO> items = response.getBody().getItems();
+        if (weekData.get(0).getNumber() == null) {
+            System.out.println("call Open Api For WeekData");
+            try {
+                // 날짜 별로 Open Api 를 호출
+                for (NumberByDate numberByDate : weekData) {
+                    URI uri = new URI(sidoInfStateURL + "?serviceKey=" + serviceKey
+                            + "&pageNo=1" + "&numOfRows=10"
+                            + "&startCreateDt=" + numberByDate.getDate() + "&endCreateDt=" + numberByDate.getDate());
 
-                // items 를 순회하면서 해당 시·도 이면 incDecByDate 에 오늘 확진자 수(IncDec) 데이터 set
-                for (SidoInfStateItemDTO item : items) {
-                    if (item.getGubunEn().equals(sido)) {
-                        numberByDate.setNumber(item.getIncDec());
-                        break;
+                    SidoInfStateResponseVO response = restTemplate.getForObject(uri, SidoInfStateResponseVO.class);
+                    List<SidoInfStateItemDTO> items = response.getBody().getItems();
+
+                    // items 를 순회하면서 해당 시·도 이면 incDecByDate 에 오늘 확진자 수(IncDec) 데이터 set
+                    for (SidoInfStateItemDTO item : items) {
+                        item.setStdDay(numberByDate.getDate());
+
+                        if (item.getGubunEn().equals(sido) && !item.getStdDay().equals(createDt)) {
+                            save(item);
+                            numberByDate.setNumber(item.getIncDec());
+                            break;
+                        }
                     }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+
         }
 
         return weekData;
-
-    }
-
-    public String getCreateDt() {
-
-        LocalTime currentTime = LocalTime.now();
-        LocalTime referenceTime = LocalTime.of(10, 0, 0);
-
-        // 현재 시간이 기준 시간 (10:00 A.M.) 보다 이전 시간이라면 하루 전 날의 확진자 정보 제공
-        // 공공데이터 업데이트 시간 전에 api 호출 시 null 값을 반환하지 못하게 하기 위함
-        if (currentTime.isBefore(referenceTime)) {
-            return LocalDateTime.now().minusDays(1).format(DateTimeFormatter.BASIC_ISO_DATE);
-        } else {
-            return LocalDateTime.now().format(DateTimeFormatter.BASIC_ISO_DATE);
-        }
 
     }
 

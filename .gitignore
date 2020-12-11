@@ -31,3 +31,10 @@ build/
 
 ### VS Code ###
 .vscode/
+node_modules/classnames/
+node_modules/enquire.js/
+node_modules/json2mq/
+node_modules/react-slick/
+node_modules/string-convert/
+src/main/resources/static/
+src/main/resources/templates/
