@@ -27,14 +27,16 @@ export default ({ gubunEn, gubun, incDec, localOccCnt, overFlowCnt }) => {
           <div className="card__figure">
             <div className="confirmed">
               <span className="figure-title">확진자</span>
-              <div className="figure-num">+{incDec}</div>
+              <div className="figure-num" id="nationFigure">
+                +{incDec}
+              </div>
             </div>
             <div className="card__bottom">
-              <div className="testing">
+              <div className="confirmed">
                 <span className="figure-title">지역 발생</span>
                 <span className="figure-num">{localOccCnt}</span>
               </div>
-              <div className="testing">
+              <div className="confirmed">
                 <span className="figure-title">해외 유입</span>
                 <span className="figure-num">{overFlowCnt}</span>
               </div>

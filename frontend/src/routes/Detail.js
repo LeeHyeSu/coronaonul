@@ -38,12 +38,19 @@ function Detail() {
     <div className="home">
       <Nav />
       <main className="detail__main">
-        <div className="detail__wrap">
+        <div className="detail__wrap" id="detail-wrap">
           <div className="detail__header">
             <h2 className="detail__krTitle">{nationData?.gubun}</h2>
             <h2 className="detail__enTitle">
               ({nationData?.gubunEn}) 코로나-19 현황
             </h2>
+          </div>
+          <div className="notice" id="detail-notice">
+            <img
+              src="https://img.echosting.cafe24.com/skin/base/common/ico_required.gif"
+              alt="필수"
+            />
+            모든 데이터는 오전 10시에 업데이트 됩니다.
           </div>
           <div className="detail__content">
             <div className="chart__left">
