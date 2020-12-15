@@ -40,6 +40,13 @@ const Home = () => {
     <div className="home">
       <Nav />
       <main className="main">
+        <div className="notice">
+          <img
+            src="https://img.echosting.cafe24.com/skin/base/common/ico_required.gif"
+            alt="필수"
+          />
+          모든 데이터는 오전 10시에 업데이트 됩니다.
+        </div>
         <TotalCard />
         <NationCards>
           {data

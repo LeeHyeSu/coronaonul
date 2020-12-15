@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import Nav from "../Components/Nav";
-import Graph from "../Components/Graph";
+import NationGraph from "../Components/NationGraph";
 import "../Components/css/styles.css";
 
 function Detail() {
@@ -38,19 +38,26 @@ function Detail() {
     <div className="home">
       <Nav />
       <main className="detail__main">
-        <div className="detail__wrap">
+        <div className="detail__wrap" id="detail-wrap">
           <div className="detail__header">
             <h2 className="detail__krTitle">{nationData?.gubun}</h2>
             <h2 className="detail__enTitle">
               ({nationData?.gubunEn}) 코로나-19 현황
             </h2>
           </div>
+          <div className="notice" id="detail-notice">
+            <img
+              src="https://img.echosting.cafe24.com/skin/base/common/ico_required.gif"
+              alt="필수"
+            />
+            모든 데이터는 오전 10시에 업데이트 됩니다.
+          </div>
           <div className="detail__content">
             <div className="chart__left">
               <span className="graph__title">
                 {nationData?.gubun} 일일 확진자 발생 추이 그래프
               </span>
-              <Graph weekData={weekData.map((d) => d.number)} />
+              <NationGraph weekData={weekData.map((d) => d.number)} />
             </div>
             <hr className="divider"></hr>
             <div className="chart__right">
