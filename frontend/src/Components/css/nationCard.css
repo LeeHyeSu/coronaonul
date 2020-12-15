@@ -13,6 +13,10 @@
   flex-direction: column;
 }
 
+#nationFigure {
+  font-size: 1.2em;
+}
+
 .card__bottom {
   display: flex;
   justify-content: space-around;

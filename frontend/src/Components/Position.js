@@ -2,13 +2,11 @@ import React from "react";
 import dotenv from "dotenv";
 
 dotenv.config();
-// require("dotenv").config();
 
 class Position extends React.Component {
   state = {
     lat: undefined,
     lon: undefined,
-    // tempC: undefined,
     city: undefined,
     country: undefined,
     errorMessage: undefined,
@@ -44,14 +42,13 @@ class Position extends React.Component {
 
   getWeather = async (lat, lon) => {
     const api_call = await fetch(
-      `//api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.REACT_APP_API}&units=metric`
+      `//api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.REACT_APP_GEO_API}&units=metric`
     );
     const data = await api_call.json();
     this.setState({
       lat: lat,
       lon: lon,
       city: data.name,
-      // tempC: Math.round(data.main.temp),
     });
   };
 
@@ -61,9 +58,6 @@ class Position extends React.Component {
         <div className="weather">
           <div>
             <span className="weather-item">{this.state.city}</span>
-            <span className="weather-item">
-              {/* {this.state.tempC} &deg;C  */}
-            </span>
           </div>
         </div>
       );
