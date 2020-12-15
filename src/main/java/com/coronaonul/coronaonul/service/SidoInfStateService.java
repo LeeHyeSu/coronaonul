@@ -43,10 +43,12 @@ public class SidoInfStateService {
         List<SidoInfState> sidoInfStateList = sidoInfStateRepository.findByDate(createDt);
 
         if (!sidoInfStateList.isEmpty()) {
+            System.out.println("from database");
             return sidoInfStateList.stream()
                     .map(SidoInfStateItemDTO::new)
                     .collect(Collectors.toList());
         } else {
+            System.out.println("call open api");
             return getItemsFromOpenApi();
         }
 
@@ -69,7 +71,7 @@ public class SidoInfStateService {
                 item.setStdDay(createDt);
 
                 List<SidoInfState> sidoInfStateList = sidoInfStateRepository.findByDateAndSido(createDt, item.getGubunEn());
-                if (!sidoInfStateList.isEmpty()) {
+                if (sidoInfStateList.isEmpty()) {
                     save(item);
                 }
             }
@@ -90,6 +92,7 @@ public class SidoInfStateService {
         if (!sidoInfStateList.isEmpty()) {
             sidoDetails.setSidoInfState(new SidoInfStateItemDTO(sidoInfStateList.get(0)));
         } else {
+            System.out.println("call open api");
             List<SidoInfStateItemDTO> items = getItemsFromOpenApi();
 
             for (SidoInfStateItemDTO item : items) {
@@ -131,6 +134,7 @@ public class SidoInfStateService {
         }
 
         if (weekData.get(0).getNumber() == null) {
+            System.out.println("call open api");
             try {
                 // 날짜 별로 Open Api 를 호출
                 for (NumberByDate numberByDate : weekData) {
@@ -147,7 +151,7 @@ public class SidoInfStateService {
 
                         if (item.getGubunEn().equals(sido) && !item.getStdDay().equals(createDt)) {
                             sidoInfStateList = sidoInfStateRepository.findByDateAndSido(item.getStdDay(), item.getGubunEn());
-                            if (!sidoInfStateList.isEmpty()) {
+                            if (sidoInfStateList.isEmpty()) {
                                 save(item);
                             }
 
