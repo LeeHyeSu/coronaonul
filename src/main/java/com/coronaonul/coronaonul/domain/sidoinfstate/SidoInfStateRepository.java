@@ -11,10 +11,7 @@ public interface SidoInfStateRepository extends JpaRepository<SidoInfState, Long
     @Query("SELECT s FROM SidoInfState s WHERE s.stdDay = :stdDay")
     List<SidoInfState> findByDate(@Param("stdDay") String date);
 
-    @Query("SELECT s FROM SidoInfState s WHERE s.gubunEn = :gubunEn")
-    SidoInfState findBySido(@Param("gubunEn") String sido);
-
     @Query("SELECT s FROM SidoInfState s WHERE s.stdDay = :stdDay AND s.gubunEn = :gubunEn")
-    SidoInfState findByDateAndSido(@Param("stdDay") String date, @Param("gubunEn") String sido);
+    List<SidoInfState> findByDateAndSido(@Param("stdDay") String date, @Param("gubunEn") String sido);
 
 }
