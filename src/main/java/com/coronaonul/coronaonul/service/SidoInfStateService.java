@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -112,7 +113,8 @@ public class SidoInfStateService {
 
         List<NumberByDate> weekData = new ArrayList<>();
 
-        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDate now = LocalDate.parse(createDt, formatter);
 
         // 현재 날짜로부터 일주일 전까지의 날짜 리스트 생성
         for (int i = 6; i > 0; i--) {
