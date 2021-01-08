@@ -1,6 +1,7 @@
 package com.coronaonul.coronaonul.service;
 
 import com.coronaonul.coronaonul.domain.sidoinfstate.SidoInfState;
+import com.coronaonul.coronaonul.domain.sidoinfstate.SidoInfStatePK;
 import com.coronaonul.coronaonul.domain.sidoinfstate.SidoInfStateRepository;
 import com.coronaonul.coronaonul.vo.*;
 import lombok.RequiredArgsConstructor;
@@ -11,10 +12,11 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -29,8 +31,6 @@ public class SidoInfStateService {
     @Value("${sidoInfStateURL}")
     private String sidoInfStateURL;
 
-    private String createDt = new CreateDate().getCreateDt();
-
     private RestTemplate restTemplate = new RestTemplate();
 
     @Transactional
@@ -39,7 +39,7 @@ public class SidoInfStateService {
     }
 
     @Transactional
-    public List<SidoInfStateItemDTO> findByDate() {
+    public List<SidoInfStateItemDTO> findByDate(String createDt) {
 
         List<SidoInfState> sidoInfStateList = sidoInfStateRepository.findByDate(createDt);
 
@@ -47,16 +47,19 @@ public class SidoInfStateService {
             System.out.println("from database");
             return sidoInfStateList.stream()
                     .map(SidoInfStateItemDTO::new)
+                    .sorted((Comparator.comparing(SidoInfStateItemDTO::getGubun)))
                     .collect(Collectors.toList());
         } else {
             System.out.println("call open api");
-            return getItemsFromOpenApi();
+            return getItemsFromOpenApi(createDt).stream()
+                    .sorted((Comparator.comparing(SidoInfStateItemDTO::getGubun)))
+                    .collect(Collectors.toList());
         }
 
     }
 
     @Transactional
-    public List<SidoInfStateItemDTO> getItemsFromOpenApi() {
+    public List<SidoInfStateItemDTO> getItemsFromOpenApi(String createDt) {
 
         List<SidoInfStateItemDTO> items = new ArrayList<>();
 
@@ -71,8 +74,8 @@ public class SidoInfStateService {
             for (SidoInfStateItemDTO item : items) {
                 item.setStdDay(createDt);
 
-                List<SidoInfState> sidoInfStateList = sidoInfStateRepository.findByDateAndSido(createDt, item.getGubunEn());
-                if (sidoInfStateList.isEmpty()) {
+                Optional<SidoInfState> sidoInfState = sidoInfStateRepository.findById(new SidoInfStatePK(createDt, item.getGubunEn()));
+                if (!sidoInfState.isPresent()) {
                     save(item);
                 }
             }
@@ -85,16 +88,16 @@ public class SidoInfStateService {
     }
 
     @Transactional
-    public SidoDetails findBySido(String sido) {
+    public SidoDetails findBySido(String sido, String createDt) {
 
         SidoDetails sidoDetails = new SidoDetails();
-        List<SidoInfState> sidoInfStateList = sidoInfStateRepository.findByDateAndSido(createDt, sido);
+        Optional<SidoInfState> sidoInfState = sidoInfStateRepository.findById(new SidoInfStatePK(createDt, sido));
 
-        if (!sidoInfStateList.isEmpty()) {
-            sidoDetails.setSidoInfState(new SidoInfStateItemDTO(sidoInfStateList.get(0)));
+        if (sidoInfState.isPresent()) {
+            sidoDetails.setSidoInfState(new SidoInfStateItemDTO(sidoInfState.get()));
         } else {
             System.out.println("call open api");
-            List<SidoInfStateItemDTO> items = getItemsFromOpenApi();
+            List<SidoInfStateItemDTO> items = getItemsFromOpenApi(createDt);
 
             for (SidoInfStateItemDTO item : items) {
                 if (item.getGubunEn().equals(sido)) {
@@ -103,13 +106,13 @@ public class SidoInfStateService {
             }
         }
 
-        sidoDetails.setWeekData(getWeekData(sido));
+        sidoDetails.setWeekData(getWeekData(sido, createDt));
 
         return sidoDetails;
     }
 
     @Transactional
-    public List<NumberByDate> getWeekData(String sido) {
+    public List<NumberByDate> getWeekData(String sido, String createDt) {
 
         List<NumberByDate> weekData = new ArrayList<>();
 
@@ -120,26 +123,25 @@ public class SidoInfStateService {
         for (int i = 6; i > 0; i--) {
             String date = now.minusDays(i).format(DateTimeFormatter.BASIC_ISO_DATE);
 
-            List<SidoInfState> sidoInfStateList = sidoInfStateRepository.findByDateAndSido(date, sido);
-            if (!sidoInfStateList.isEmpty()) {
-                weekData.add(new NumberByDate(date, sidoInfStateList.get(0).getIncDec()));
+            Optional<SidoInfState> sidoInfState = sidoInfStateRepository.findById(new SidoInfStatePK(date, sido));
+            if (sidoInfState.isPresent()) {
+                weekData.add(new NumberByDate(date, sidoInfState.get().getIncDec()));
             } else {
                 weekData.add(new NumberByDate(date));
             }
         }
 
-        List<SidoInfState> sidoInfStateList = sidoInfStateRepository.findByDateAndSido(createDt, sido);
-        if (!sidoInfStateList.isEmpty()) {
-            weekData.add(new NumberByDate(createDt, sidoInfStateList.get(0).getIncDec()));
+        Optional<SidoInfState> sidoInfState = sidoInfStateRepository.findById(new SidoInfStatePK(createDt, sido));
+        if (sidoInfState.isPresent()) {
+            weekData.add(new NumberByDate(createDt, sidoInfState.get().getIncDec()));
         } else {
             weekData.add(new NumberByDate(createDt));
         }
 
-        if (weekData.get(0).getNumber() == null) {
-            System.out.println("call open api");
-            try {
-                // 날짜 별로 Open Api 를 호출
-                for (NumberByDate numberByDate : weekData) {
+        for (NumberByDate numberByDate : weekData) {
+            if (numberByDate.getNumber() == null) {
+                System.out.println("call open api");
+                try {
                     URI uri = new URI(sidoInfStateURL + "?serviceKey=" + serviceKey
                             + "&pageNo=1" + "&numOfRows=10"
                             + "&startCreateDt=" + numberByDate.getDate() + "&endCreateDt=" + numberByDate.getDate());
@@ -152,8 +154,8 @@ public class SidoInfStateService {
                         item.setStdDay(numberByDate.getDate());
 
                         if (item.getGubunEn().equals(sido) && !item.getStdDay().equals(createDt)) {
-                            sidoInfStateList = sidoInfStateRepository.findByDateAndSido(item.getStdDay(), item.getGubunEn());
-                            if (sidoInfStateList.isEmpty()) {
+                            sidoInfState = sidoInfStateRepository.findById(new SidoInfStatePK(item.getStdDay(), item.getGubunEn()));
+                            if (!sidoInfState.isPresent()) {
                                 save(item);
                             }
 
@@ -161,11 +163,11 @@ public class SidoInfStateService {
                             break;
                         }
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
+            }
         }
 
         return weekData;

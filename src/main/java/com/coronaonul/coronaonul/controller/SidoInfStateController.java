@@ -1,6 +1,7 @@
 package com.coronaonul.coronaonul.controller;
 
 import com.coronaonul.coronaonul.service.SidoInfStateService;
+import com.coronaonul.coronaonul.vo.CreateDate;
 import com.coronaonul.coronaonul.vo.SidoDetails;
 import com.coronaonul.coronaonul.vo.SidoInfStateItemDTO;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +22,14 @@ public class SidoInfStateController {
 
     @GetMapping("/coronaonul")
     public List<SidoInfStateItemDTO> requestSidoInfState() {
-        return sidoInfStateService.findByDate();
+        String createDt = new CreateDate().getCreateDt();   // 현재 날짜 구하기
+        return sidoInfStateService.findByDate(createDt);
     }
 
     @GetMapping("/coronaonul/{sido}")
     public SidoDetails requestSidoDetails(@PathVariable String sido) {
-        return sidoInfStateService.findBySido(sido);
+        String createDt = new CreateDate().getCreateDt();   // 현재 날짜 구하기
+        return sidoInfStateService.findBySido(sido, createDt);
     }
 
 }
